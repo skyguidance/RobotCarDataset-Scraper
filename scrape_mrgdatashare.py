@@ -740,8 +740,8 @@ if __name__ == "__main__":
                     time.sleep(args.reconnection_duration)
 
             # unzip
-            if file_was_found:
-                zipper.unzip(url_handler)
+#             if file_was_found:
+#                 zipper.unzip(url_handler)
 
         # tidy up
         zipper.tidy_up()
