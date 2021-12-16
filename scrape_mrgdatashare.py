@@ -257,6 +257,9 @@ class Scraper:
             url_handler (URLHandler): Local file path for the sensor log to be downloaded.
 
         """
+        # check if file already downloaded
+        if os.path.exists(url_handler.local_file_path):
+            return True
 
         # make request
         print("requesting file_url: " + url_handler.file_url)
@@ -281,9 +284,7 @@ class Scraper:
 
         agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
         result.headers.update({'user-agent': agent})
-        
-        if os.path.exists(url_handler.local_file_path):
-            return True
+       
 
         with open(url_handler.local_file_path+".tmp", 'wb') as file_handle:
 
