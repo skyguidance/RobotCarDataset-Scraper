@@ -268,7 +268,7 @@ class Scraper:
 
         while 'html' in result.headers.get('content-type', 'html'):
             print(
-                "Got html file as result. Wait {self.relogin_duration} seconds and re-loging...")
+                "Got html file as result. Wait {} seconds and re-loging...".format(self.relogin_duration))
             time.sleep(self.relogin_duration)
             self.login()
             result = self.session_requests.get(
@@ -281,8 +281,11 @@ class Scraper:
 
         agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'
         result.headers.update({'user-agent': agent})
+        
+        if os.path.exists(url_handler.local_file_path):
+            return True
 
-        with open(url_handler.local_file_path, 'wb') as file_handle:
+        with open(url_handler.local_file_path+".tmp", 'wb') as file_handle:
 
             # iterate chunks
             total_size = int(result.headers.get('content-length', 0))
@@ -301,7 +304,9 @@ class Scraper:
                 # filter out keep-alive new chunks
                 if chunk:
                     file_handle.write(chunk)
-
+        
+        os.rename(url_handler.local_file_path+".tmp",url_handler.local_file_path)
+        print("Completed File:{}".format(url_handler.local_file_path))
         return True
 
 
